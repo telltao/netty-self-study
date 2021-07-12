@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_package = "cn.telltao.common.protobuf";
+option java_outer_classname = "GroupModule";
+
+// run : terminal中执行 protoc ./proto/group.proto --java_out=./src/main/java
+
+message Group {
+  string groupId =1;
+  string groupName = 2;
+
+}
+

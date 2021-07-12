@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option java_package = "cn.telltao.common.protobuf";
+option java_outer_classname = "MessageModule";
+
+// run : terminal中执行 protoc ./proto/message.proto --java_out=./src/main/java
+
+enum MessageType {
+  REQUEST = 0;
+  RESPONSE = 1;
+
+}
+
+enum  ResultType {
+  SUCCESS = 0;
+  FAILURE = 1;
+  ERROR = 2;
+}
+
+message Message {
+
+  // 协议请求头部分
+  int64 cycCode = 1;
+  MessageType messageType = 2;
+  ResultType resultType = 3;
+  // 模块类型
+  string module = 4;
+  string cmd = 5;
+
+
+  // 协议包体
+  bytes body = 6;
+
+}
