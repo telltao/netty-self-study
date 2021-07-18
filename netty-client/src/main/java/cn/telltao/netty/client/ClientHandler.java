@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ClientHandler  extends ChannelInboundHandlerAdapter {
     /**
-     * 创建一个线程组 在此不再过于描述 请 google
+     * 创建一个线程组
      */
     ThreadPoolExecutor workerPool = new ThreadPoolExecutor(5,
             10,
