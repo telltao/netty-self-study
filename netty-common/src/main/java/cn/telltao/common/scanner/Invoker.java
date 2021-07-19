@@ -1,8 +1,6 @@
 package cn.telltao.common.scanner;
 
-import afu.org.checkerframework.checker.igj.qual.I;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,9 +21,10 @@ public class Invoker {
      * @author telltao@qq.com
      *   创建对象
      * </pre>
-     * @date 2021/7/17 15:47
+     *
      * @param
      * @return
+     * @date 2021/7/17 15:47
      */
     public static Invoker createInvoker(Method method, Object target) {
         Invoker invoker = new Invoker();
@@ -40,9 +39,10 @@ public class Invoker {
      * @author telltao@qq.com
      *  调用对象
      * </pre>
-     * @date 2021/7/17 15:47
+     *
      * @param
      * @return
+     * @date 2021/7/17 15:47
      */
     public Object invoke(Object... params) {
         try {

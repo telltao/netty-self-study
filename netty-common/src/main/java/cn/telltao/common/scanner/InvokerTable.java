@@ -1,9 +1,7 @@
 package cn.telltao.common.scanner;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,11 +28,10 @@ public class InvokerTable {
     public static void addInvoker(String module,String cmd,Invoker invoker){
         Map<String, Invoker> map = invokerTable.get(module);
         if(MapUtils.isEmpty(map)){
-            map = Collections.emptyMap();
+            map = new HashMap<>();
             invokerTable.put(module,map);
         }
         map.put(cmd,invoker);
-
     }
 
     /**

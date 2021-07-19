@@ -14,15 +14,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Module(module = "user")
-@Slf4j
 public class UserService {
 
     @Cmd(cmd = "save")
-    public Result<?> save(byte [] data) {
+    public Result<?> save(byte[] data) {
         UserModule.User user = null;
         try {
             user = UserModule.User.parseFrom(data);
-            log.info(" save --  userId:{},userName:{},",user.getUserId(),user.getUserName());
+            System.err.println(" save ok , userId: " + user.getUserId() + " ,userName: " + user.getUserName());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
             return Result.failure();
@@ -31,17 +30,11 @@ public class UserService {
     }
 
     @Cmd(cmd = "update")
-    public Object update() {
-        return null;
-
-    }
-
-    @Cmd(cmd = "update")
-    public Result<?> update(byte [] data) {
+    public Result<?> update(byte[] data) {
         UserModule.User user = null;
         try {
             user = UserModule.User.parseFrom(data);
-            log.info(" update --  userId:{},userName:{},",user.getUserId(),user.getUserName());
+            System.err.println(" update ok , userId: " + user.getUserId() + " ,userName: " + user.getUserName());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
             return Result.failure();

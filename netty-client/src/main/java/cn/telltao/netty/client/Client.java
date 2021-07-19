@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * netty的客户端操作类
  * @Date 2021/7/11 18:50
  */
-//@Component
 public class Client {
 
 
@@ -135,9 +134,10 @@ public class Client {
      * @author telltao@qq.com
      *  向服务器端发送数据
      * </pre>
-     * @date 2021/7/19 20:15
+     *
      * @param
      * @return
+     * @date 2021/7/19 20:15
      */
     public void sendMessage(String module, String cmd, GeneratedMessageV3 messageData) {
         this.channel.writeAndFlush(MessageBuilder.getRequestMessage(module, cmd, messageData));

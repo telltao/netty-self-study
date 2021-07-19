@@ -16,7 +16,6 @@ import java.util.Objects;
  * @Date 2021/7/12 20:46
  */
 @Component
-@Slf4j
 public class NettyProcessScanner implements BeanPostProcessor {
 
     @Override
@@ -26,14 +25,16 @@ public class NettyProcessScanner implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        Class<?> clazz = bean.getClass();
-        //是否有指定注解
-        boolean isAnnotation = clazz.isAnnotationPresent(Module.class);
 
-        if (isAnnotation) {
+        //	1.首先获取当前bean的class类型
+        Class<?> clazz = bean.getClass();
+
+        boolean isPresent = clazz.isAnnotationPresent(Module.class);
+
+        if(isPresent) {
             Method[] methods = clazz.getMethods();
             if (!Objects.isNull(methods) && methods.length > 0) {
-                for (Method m : methods) {
+                for(Method m : methods) {
                     Module module = clazz.getAnnotation(Module.class);
                     Cmd cmd = m.getAnnotation(Cmd.class);
                     if (Objects.isNull(cmd)) {
@@ -42,14 +43,16 @@ public class NettyProcessScanner implements BeanPostProcessor {
                     String moduleValue = module.module();
                     String cmdValue = cmd.cmd();
 
+                    //	只需要把moduleValue + cmdValue的值与对应的反射对象(invoker) 管理起来(map)
                     if (Objects.isNull(InvokerTable.getInvoker(moduleValue, cmdValue))) {
                         InvokerTable.addInvoker(moduleValue, cmdValue, Invoker.createInvoker(m, bean));
                     } else {
-                        log.error("该程序缓存已经存在 module:{},cmd:{}", moduleValue, cmdValue);
+                        System.err.println("模块下的命令对应的程序缓存已经存在, module: " + moduleValue + " ,cmd: " + cmdValue);
                     }
                 }
             }
         }
-        return null;
+
+        return bean;
     }
 }

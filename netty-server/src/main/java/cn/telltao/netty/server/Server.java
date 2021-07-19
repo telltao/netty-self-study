@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
  * netty的服务端启动类
  * @Date 2021/7/12 17:32
  */
-//@Component
 public class Server {
 
     public static final int PORT = 6666;
@@ -54,13 +53,11 @@ public class Server {
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             //release
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
             System.out.println(" Server shutdown..");
         }
-
     }
-
 }
