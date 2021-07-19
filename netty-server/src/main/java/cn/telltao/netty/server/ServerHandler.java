@@ -26,7 +26,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
         MessageModule.Message request = (MessageModule.Message) msg;
-        executor.submit( new MessageTaskRequest(request,ctx));
-        super.channelRead(ctx, msg);
+        executor.submit(new MessageTaskRequest(request, ctx));
     }
 }

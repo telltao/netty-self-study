@@ -18,6 +18,8 @@ public class MessageTaskRequest implements Runnable {
 
     private ChannelHandlerContext ctx;
 
+    private final static String  RETURN = "-return";
+
     public MessageTaskRequest(MessageModule.Message message, ChannelHandlerContext ctx) {
         this.message = message;
         this.ctx = ctx;
@@ -35,8 +37,10 @@ public class MessageTaskRequest implements Runnable {
         Result<?> result = (Result<?>) invoker.invoke(data);
 
         Message responseMessage = MessageBuilder.getResponseMessage
-                (module, cmd, result.getResultType(), result.getContent());
+                (module +RETURN, cmd +RETURN, result.getResultType(), result.getContent());
 
         ctx.writeAndFlush(responseMessage);
+        // 此处为何不用执行? //释放资源    ReferenceCountUtil.release(message);
+        //因为服务端给客户端写数据时,会自动帮你进行释放,请看 writeAndFlush源码
     }
 }
