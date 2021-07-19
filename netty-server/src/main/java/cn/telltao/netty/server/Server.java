@@ -22,10 +22,10 @@ import org.springframework.stereotype.Component;
  * netty的服务端启动类
  * @Date 2021/7/12 17:32
  */
-@Component
+//@Component
 public class Server {
 
-    public static final int PORT = 8888;
+    public static final int PORT = 6666;
 
 
     public Server() {
