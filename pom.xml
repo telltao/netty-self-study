@@ -19,6 +19,7 @@
         <module>netty-common</module>
         <module>netty-client</module>
         <module>netty-server</module>
+        <module>telltao-netty-rpc</module>
     </modules>
 
     <dependencies>
@@ -28,6 +29,13 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
         </dependency>
 
     </dependencies>
