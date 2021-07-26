@@ -11,11 +11,24 @@ public class ProviderConfig extends RpcConfigAbstract {
 
     protected Object ref;
 
+    protected String interfaceClass = null;
+
+
     public Object getRef() {
         return ref;
     }
 
     public void setRef(Object ref) {
         this.ref = ref;
+    }
+
+    @Override
+    public String getInterfaceClass() {
+        return interfaceClass;
+    }
+
+    @Override
+    public void setInterfaceClass(String interfaceClass) {
+        this.interfaceClass = interfaceClass;
     }
 }

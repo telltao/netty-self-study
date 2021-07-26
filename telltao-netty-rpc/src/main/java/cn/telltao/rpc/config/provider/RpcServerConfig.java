@@ -16,7 +16,7 @@ public class RpcServerConfig {
 
     private final String host = "127.0.0.1";
 
-    protected int prot;
+    protected int port;
 
     private List<ProviderConfig> providerConfigs;
 
@@ -30,7 +30,7 @@ public class RpcServerConfig {
         if (Objects.isNull(rpcServer)) {
 
             try {
-                rpcServer = new RpcServer((host + ":" + prot));
+                rpcServer = new RpcServer((host + ":" + port));
             } catch (InterruptedException e) {
                 log.error("RpcServerConfig-exporter exception:{}", e);
                 e.printStackTrace();
@@ -45,13 +45,12 @@ public class RpcServerConfig {
         }
     }
 
-
-    public int getProt() {
-        return prot;
+    public int getPort() {
+        return port;
     }
 
-    public void setProt(int prot) {
-        this.prot = prot;
+    public void setPort(int port) {
+        this.port = port;
     }
 
     public List<ProviderConfig> getProviderConfigs() {

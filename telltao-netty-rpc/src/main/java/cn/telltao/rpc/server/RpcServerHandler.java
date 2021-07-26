@@ -52,7 +52,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
             } catch (Exception e) {
                 //返回异常
                 response.setThrowable(e);
-                log.error("rpc service handle requesty Throwable:{}", t);
+                log.error("rpc service handle requesty Throwable:{}", e);
             }
             ctx.writeAndFlush(response).addListener(new ChannelFutureListener() {
                 @Override

@@ -216,7 +216,7 @@ public class RpcConnectManager {
      */
     private void addHandler(RpcClientHandler handler) {
         connectedHandlerList.add(handler);
-        InetSocketAddress remoteAddress = (InetSocketAddress) handler.getRemotePeer();
+        InetSocketAddress remoteAddress = (InetSocketAddress) handler.getChannel().remoteAddress();
         connectedHandlerMap.put(remoteAddress, handler);
         // singnalAvailableHandler 唤醒可用的业务执行器
         singnalAvailableHandler();
@@ -246,7 +246,7 @@ public class RpcConnectManager {
         connectedLock.lock();
         try {
             //唤醒所有等待的线程
-            connectedCondition.await(this.connectedTimeoutMills, TimeUnit.SECONDS);
+           return connectedCondition.await(this.connectedTimeoutMills, TimeUnit.SECONDS);
         } finally {
             connectedLock.unlock();
         }

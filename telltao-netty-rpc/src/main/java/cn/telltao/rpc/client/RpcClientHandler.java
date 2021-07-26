@@ -27,6 +27,9 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
     private Map<String,RpcFuture> pendingRpcTable = new ConcurrentHashMap<String,RpcFuture>();
 
 
+    public Channel getChannel() {
+        return channel;
+    }
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
