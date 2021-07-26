@@ -53,13 +53,12 @@ public class RpcServer {
                     protected void initChannel(SocketChannel ch) throws Exception {
 
                         ChannelPipeline pipeline = ch.pipeline();
-                        // 编码的handler 服务端编码使用返回对象
-                        pipeline.addLast(new RpcEncoder(RpcResponse.class));
-
-                        pipeline.addLast(new LengthFieldBasedFrameDecoder(20*1024,
+                        pipeline.addLast(new LengthFieldBasedFrameDecoder(65536,
                                 0, 4, 0, 0));
                         // 解码的handler 服务端解码使用请求对象
                         pipeline.addLast(new RpcDecoder(RpcRequest.class));
+                        // 编码的handler 服务端编码使用返回对象
+                        pipeline.addLast(new RpcEncoder(RpcResponse.class));
                         //自定义handler
                         pipeline.addLast(new RpcServerHandler(handlerMap));
 

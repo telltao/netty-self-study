@@ -19,6 +19,6 @@ public class HelloServiceImpl  implements HelloService {
     @Override
     public String hello(User user) {
         // 你好吉吉国王,我是 毛毛
-        return "Hi~ monkey ,I'm a !"+user.getName();
+        return "Hi~ monkey ,I'm a "+user.getName()+" !";
     }
 }

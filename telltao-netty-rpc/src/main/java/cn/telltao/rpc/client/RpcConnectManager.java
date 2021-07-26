@@ -26,14 +26,8 @@ import java.util.concurrent.locks.ReentrantLock;
 @Slf4j
 public class RpcConnectManager {
 
-    private static volatile RpcConnectManager rpcConnectManager = new RpcConnectManager();
+    public RpcConnectManager() {
 
-    private RpcConnectManager() {
-
-    }
-
-    public static RpcConnectManager getInstance() {
-        return rpcConnectManager;
     }
 
     /**
@@ -67,7 +61,6 @@ public class RpcConnectManager {
     // 是否运行状态
     private volatile boolean isRunning = true;
 
-    // AtomicInteger 本身已经修饰 volatile, 此处加的目的是给自己看的...
     private volatile AtomicInteger handlerIdx = new AtomicInteger(0);
 
     //1,异步连接 连接失败监听,连接成功监听
@@ -78,6 +71,14 @@ public class RpcConnectManager {
         List<String> allServerAddress = Arrays.asList(serverAddress.split(","));
         updateConnectedServer(allServerAddress);
 
+    }
+
+    /**
+     * 	add connect List<String> serverAddress
+     * @param serverAddress
+     */
+    public void connect(List<String> serverAddress) {
+        updateConnectedServer(serverAddress);
     }
 
     /**
@@ -165,6 +166,7 @@ public class RpcConnectManager {
                         //清空之前的连接
                         log.warn("connect fail,to reconnect! ");
                         clearConnected();
+                        connect(b, remotePeer);
                     }
                 }, 3, TimeUnit.SECONDS);
             }
@@ -246,7 +248,7 @@ public class RpcConnectManager {
         connectedLock.lock();
         try {
             //唤醒所有等待的线程
-           return connectedCondition.await(this.connectedTimeoutMills, TimeUnit.SECONDS);
+           return connectedCondition.await(this.connectedTimeoutMills, TimeUnit.MICROSECONDS);
         } finally {
             connectedLock.unlock();
         }
@@ -276,6 +278,7 @@ public class RpcConnectManager {
             }
         }
 
+        // NullPointerException
         if (!isRunning) {
             return null;
         }
@@ -299,8 +302,9 @@ public class RpcConnectManager {
             rpcClientHandler.close();
         });
 
-        // 在这里要调用一下唤醒操作
+        // 唤醒
         singnalAvailableHandler();
+
         threadPoolExecutor.shutdown();
         eventLoopGroup.shutdownGracefully();
 

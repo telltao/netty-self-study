@@ -28,6 +28,7 @@ public class RpcEncoder extends MessageToByteEncoder<Object> {
         if (genericClass.isInstance(msg)) {
             byte[] data = SerializationUtils.serialize(msg);
             // 消息分为 1,包头 数据包长度  2,包体
+            out.writeInt(data.length);
             out.writeBytes(data);
         }
     }

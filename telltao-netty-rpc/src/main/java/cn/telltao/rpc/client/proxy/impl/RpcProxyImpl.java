@@ -22,9 +22,13 @@ public class RpcProxyImpl<T> implements InvocationHandler, RpcAsyncProxy {
 
     private long timeout;
 
-    public RpcProxyImpl(Class<T> clazz, long timeout) {
+    private RpcConnectManager rpcConnectManager;
+
+    public RpcProxyImpl(RpcConnectManager rpcConnectManager, Class<T> clazz, long timeout) {
         this.clazz = clazz;
         this.timeout = timeout;
+        this.rpcConnectManager = rpcConnectManager;
+
     }
 
 
@@ -49,7 +53,7 @@ public class RpcProxyImpl<T> implements InvocationHandler, RpcAsyncProxy {
         request.setParamterTypes(method.getParameterTypes());
 
         //2,选择一个合适的Client对象
-        RpcClientHandler clientHandler = RpcConnectManager.getInstance().chooseHandler();
+        RpcClientHandler clientHandler = this.rpcConnectManager.chooseHandler();
 
         //3,发送客户端请求,并返回结果
         RpcFuture rpcFuture = clientHandler.sendRequest(request);
@@ -78,15 +82,15 @@ public class RpcProxyImpl<T> implements InvocationHandler, RpcAsyncProxy {
         request.setMethodName(functionName);
         request.setParamters(args);
 
-        if (args.length > 0) {
+        //if (args.length > 0) {
             Class<?>[] paramTypes = new Class[args.length];
             for (int i = 0; i < args.length; i++) {
                 paramTypes[i] = getClassType(args[i]);
             }
             request.setParamterTypes(paramTypes);
-        }
+        //}
         //调用直接客户端.发送数据并返回
-        RpcClientHandler rpcClientHandler = RpcConnectManager.getInstance().chooseHandler();
+        RpcClientHandler rpcClientHandler = rpcConnectManager.chooseHandler();
         RpcFuture rpcFuture = rpcClientHandler.sendRequest(request);
 
 
@@ -106,7 +110,7 @@ public class RpcProxyImpl<T> implements InvocationHandler, RpcAsyncProxy {
      */
     public <T> RpcAsyncProxy invokeAsync(Class<T> interfaceClass) {
 
-        RpcProxyImpl asyncProxyImpl = new RpcProxyImpl(interfaceClass, timeout);
+        RpcProxyImpl asyncProxyImpl = new RpcProxyImpl(rpcConnectManager,interfaceClass, timeout);
 
         return asyncProxyImpl;
     }

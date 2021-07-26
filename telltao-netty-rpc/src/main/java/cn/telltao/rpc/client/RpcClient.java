@@ -4,6 +4,7 @@ import cn.telltao.rpc.client.proxy.RpcAsyncProxy;
 import cn.telltao.rpc.client.proxy.impl.RpcProxyImpl;
 
 import java.lang.reflect.Proxy;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,27 +15,37 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class RpcClient {
 
-    private String serverAddress;
 
-    private long timeout;
 
     private final Map<Class<?>, Object> syncProxyIntanceMap = new ConcurrentHashMap<>();
 
     private final Map<Class<?>, Object> asyncProxyIntanceMap = new ConcurrentHashMap<>();
 
+
+    private String serverAddress;
+
+    private List<String> serverAddressList;
+
+    private long timeout;
+
+    private RpcConnectManager rpcConnectManager;
+
+
     public void initClient(String serverAddress, long timeout) {
         this.serverAddress = serverAddress;
         this.timeout = timeout;
+        this.rpcConnectManager = new RpcConnectManager();
+
         connect();
     }
 
 
     private void connect() {
-        RpcConnectManager.getInstance().connect(serverAddress);
+        this.rpcConnectManager.connect(this.serverAddress);
     }
 
     public void stop() {
-        RpcConnectManager.getInstance().stop();
+        this.rpcConnectManager.stop();
     }
 
     /**
@@ -51,15 +62,14 @@ public class RpcClient {
 
         if (syncProxyIntanceMap.containsKey(interfaceClass)) {
             return (T) syncProxyIntanceMap.get(interfaceClass);
+        } else {
+            Object proxy = Proxy.newProxyInstance(interfaceClass.getClassLoader(),
+                    new Class<?>[]{interfaceClass},
+                    new RpcProxyImpl<>(rpcConnectManager,interfaceClass, timeout));
+
+            syncProxyIntanceMap.put(interfaceClass, proxy);
+            return (T) proxy;
         }
-
-        Object proxy = Proxy.newProxyInstance(interfaceClass.getClassLoader(),
-                new Class<?>[]{interfaceClass},
-                new RpcProxyImpl<>(interfaceClass, timeout));
-
-        syncProxyIntanceMap.put(interfaceClass, proxy);
-        return (T) proxy;
-
     }
 
 
@@ -76,7 +86,7 @@ public class RpcClient {
         if (asyncProxyIntanceMap.containsKey(interfaceClass)) {
             return (RpcAsyncProxy) asyncProxyIntanceMap.get(interfaceClass);
         } else {
-            RpcProxyImpl<T> asyncProxImpl = new RpcProxyImpl<>(interfaceClass, timeout);
+            RpcProxyImpl<T> asyncProxImpl = new RpcProxyImpl<>(rpcConnectManager,interfaceClass, timeout);
             asyncProxyIntanceMap.put(interfaceClass, asyncProxImpl);
             return asyncProxImpl;
         }

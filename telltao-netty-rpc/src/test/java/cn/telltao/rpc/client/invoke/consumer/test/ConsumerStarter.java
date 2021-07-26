@@ -3,7 +3,7 @@ package cn.telltao.rpc.client.invoke.consumer.test;
 import cn.telltao.rpc.client.RpcClient;
 import cn.telltao.rpc.client.RpcFuture;
 import cn.telltao.rpc.client.proxy.RpcAsyncProxy;
-
+import cn.telltao.rpc.client.invoke.consumer.test.HelloService;
 import java.util.concurrent.ExecutionException;
 
 
@@ -14,15 +14,18 @@ public class ConsumerStarter {
 
 	public static void sync() {
 
+        System.out.println("RPC开始[同步]调用");
+
         //	rpcClient
         RpcClient rpcClient = new RpcClient();
         rpcClient.initClient(address, 3000);
         HelloService helloService = rpcClient.invokeSync(HelloService.class);
-        String result = helloService.hello("zhang3");
-        System.err.println(result);
+        String result = helloService.hello("毛毛");
+        System.out.println("sync-result:" + result);
     }
 
     public static void async() throws InterruptedException, ExecutionException {
+        System.out.println("RPC开始[异步]调用");
         RpcClient rpcClient = new RpcClient();
         rpcClient.initClient(address, 3000);
         RpcAsyncProxy proxy = rpcClient.invokeAsync(HelloService.class);
@@ -31,12 +34,14 @@ public class ConsumerStarter {
 
         Object result = future.get();
         Object result2 = future2.get();
-        System.err.println("result: " + result);
-        System.err.println("result2: " + result2);
+        System.err.println("async-result: " + result);
+        System.err.println("async--result: " + result2);
 
     }
 
     public static void main(String[] args) throws Exception {
+        sync();
         async();
+
     }
 }
