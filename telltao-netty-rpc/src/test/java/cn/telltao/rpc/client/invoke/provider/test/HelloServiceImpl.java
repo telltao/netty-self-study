@@ -7,6 +7,7 @@ import cn.telltao.rpc.client.invoke.consumer.test.User;
  * @author telltao@qq.com
  * @Date 2021/7/26 13:35
  */
+
 public class HelloServiceImpl  implements HelloService {
 
     @Override
