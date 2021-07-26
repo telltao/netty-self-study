@@ -12,7 +12,7 @@ import java.util.List;
  * Rpc 解码器
  * @Date 2021/7/23 20:17
  */
-public class RpcDecoder  extends ByteToMessageDecoder {
+public class RpcDecoder extends ByteToMessageDecoder {
 
 
     private Class<?> genericClass;
@@ -38,7 +38,7 @@ public class RpcDecoder  extends ByteToMessageDecoder {
             return;
         }
         //需要读取的数据包长度
-        byte [] data = new byte [dataLength];
+        byte[] data = new byte[dataLength];
         in.readBytes(data);
 
         //解码 返回指定的对象

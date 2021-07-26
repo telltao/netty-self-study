@@ -18,10 +18,9 @@ public class RpcEncoder extends MessageToByteEncoder<Object> {
     }
 
     /**
-     *  1,将对应的java对象进行编码
-     *  2,将内容填充到buffer中
-     *  3,将消息冲刷出站至server端
-     *
+     * 1,将对应的java对象进行编码
+     * 2,将内容填充到buffer中
+     * 3,将消息冲刷出站至server端
      */
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {

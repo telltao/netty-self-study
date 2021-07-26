@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 	$Serialization
+ * $Serialization
+ *
  * @author hezhuo.bai-JiFeng
  * @since 2019年10月15日 下午4:05:44
  */
@@ -26,7 +27,7 @@ public class SerializationUtils {
 
     private static <T> Schema<T> getSchema(Class<T> cls) {
         @SuppressWarnings("unchecked")
-		Schema<T> schema = (Schema<T>) cachedSchema.get(cls);
+        Schema<T> schema = (Schema<T>) cachedSchema.get(cls);
         if (schema == null) {
             schema = RuntimeSchema.createFrom(cls);
             if (schema != null) {
@@ -37,11 +38,11 @@ public class SerializationUtils {
     }
 
     /**
-     * 	序列化：对象->字节数组
+     * 序列化：对象->字节数组
      */
     public static <T> byte[] serialize(T obj) {
         @SuppressWarnings("unchecked")
-		Class<T> cls = (Class<T>) obj.getClass();
+        Class<T> cls = (Class<T>) obj.getClass();
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         try {
             Schema<T> schema = getSchema(cls);
@@ -54,7 +55,7 @@ public class SerializationUtils {
     }
 
     /**
-     * 	反序列化（字节数组->对象）
+     * 反序列化（字节数组->对象）
      */
     public static <T> T deserialize(byte[] data, Class<T> cls) {
         try {
