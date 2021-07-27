@@ -94,7 +94,7 @@ netty-self-study
 
 ---------
 
-#### 如何使用Netty构建一个简单客户端?
+#### 如何使用Netty构建一个简单服务端、客户端?
 
 * [简单服务端](netty-guidance/src/main/java/cn/telltao/guidance/chapter2/server/EchoServer.java)
     - [简单服务端的Handler](netty-guidance/src/main/java/cn/telltao/guidance/chapter2/server/EchoServerHandler.java)
@@ -137,7 +137,7 @@ netty-self-study
 ### telltao-netty-rpc
 * 框架架构图
 ![图片](netty-common/images/rpc.png)
-
+* 请查看源代码
 
 
 
