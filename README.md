@@ -1,7 +1,13 @@
 # netty-self-study
 * 标准版 spring boot整合Netty
 * 编写一个简单的,硬编码的RPC框架
+
+
 ## 下载代码
+
+* 代码库地址 
+    - [GitHub](https://github.com/telltao/netty-self-study)
+    - [码云](https://gitee.com/telltao/netty-self-study)
 
 ```
 
