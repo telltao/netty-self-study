@@ -1,7 +1,5 @@
 package cn.telltao.netty.server;
 
-import cn.telltao.common.protobuf.MessageModule;
-import cn.telltao.execute.MessageTaskRequest;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -24,8 +22,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
-        MessageModule.Message request = (MessageModule.Message) msg;
-        executor.submit(new MessageTaskRequest(request, ctx));
+        super.channelRead(ctx, msg);
     }
 }

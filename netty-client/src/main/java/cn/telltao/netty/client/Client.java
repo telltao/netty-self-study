@@ -1,8 +1,5 @@
 package cn.telltao.netty.client;
 
-import cn.telltao.common.protobuf.MessageBuilder;
-import cn.telltao.common.protobuf.MessageModule;
-import com.google.protobuf.GeneratedMessageV3;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -24,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * netty的客户端操作类
  * @Date 2021/7/11 18:50
  */
+@Component
 public class Client {
 
 
@@ -83,17 +81,16 @@ public class Client {
     }
 
     private void connect(String host, int port) throws Exception {
-        try {
+        try{
             Bootstrap b = new Bootstrap();
             b.group(group).channel(NioSocketChannel.class)
                     //分配一个无延迟的tcp channel实例
-                    .option(ChannelOption.TCP_NODELAY, true)
+                    .option(ChannelOption.TCP_NODELAY,true)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
-                            //自定义协议类
-                            ch.pipeline().addLast(new ProtobufDecoder(MessageModule.Message.getDefaultInstance()));
+                            //ch.pipeline().addLast(new ProtobufDecoder(MessageModule));
                             ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                             ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(new ClientHandler());
@@ -106,7 +103,7 @@ public class Client {
             System.out.println("-- Client Start..-- ");
             //当消息返回时,传递给此通道
             this.channel.closeFuture().sync();
-        } finally {
+        }finally {
             // release and reconnection
             executor.execute(new Runnable() {
                 @Override
@@ -116,7 +113,7 @@ public class Client {
                         TimeUnit.SECONDS.sleep(1);
                         try {
                             //reconnection
-                            connect(host, port);
+                            connect(host,port);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -127,19 +124,5 @@ public class Client {
                 }
             });
         }
-    }
-
-    /**
-     * <pre>
-     * @author telltao@qq.com
-     *  向服务器端发送数据
-     * </pre>
-     *
-     * @param
-     * @return
-     * @date 2021/7/19 20:15
-     */
-    public void sendMessage(String module, String cmd, GeneratedMessageV3 messageData) {
-        this.channel.writeAndFlush(MessageBuilder.getRequestMessage(module, cmd, messageData));
     }
 }

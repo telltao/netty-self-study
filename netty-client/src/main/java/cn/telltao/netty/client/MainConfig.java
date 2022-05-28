@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
  * @Date 2021/7/11 19:52
  */
 @Configuration
-@ComponentScan(basePackages = {"cn.telltao.*"})
+@ComponentScan(basePackages = {"cn.telltao.netty.*"})
 public class MainConfig {
 }
